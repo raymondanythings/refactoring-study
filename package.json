@@ -1,0 +1,24 @@
+{
+  "name": "refactoring-study",
+  "type": "module",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/raymondanythings/refactoring-study.git",
+  "author": "Raymond <akdfhr2@gmail.com>",
+  "license": "MIT",
+  "packageManager": "yarn@4.8.1",
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
+    "@types/jest": "^29.5.14",
+    "@types/node": "^22.13.17",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.3.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.2"
+  }
+}
