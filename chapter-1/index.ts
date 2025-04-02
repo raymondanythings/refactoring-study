@@ -52,30 +52,43 @@ function statement(invoice: Invoice, plays: Plays) {
     return result;
   };
 
-  function volumeCreditsFor(aPerformance: Performance) {
+  const volumeCreditsFor = (aPerformance: Performance) => {
     let result = 0;
     result += Math.max(aPerformance.audience - 30, 0);
     if ("comedy" === playFor(aPerformance).type)
       result += Math.floor(aPerformance.audience / 5);
     return result;
-  }
+  };
 
-  let totalAmount = 0;
-  let volumeCredits = 0;
+  const totalVolumeCredits = () => {
+    let volumeCredits = 0;
+
+    for (const perf of invoice.performances) {
+      volumeCredits += volumeCreditsFor(perf);
+    }
+
+    return volumeCredits;
+  };
+
+  const totalAmount = () => {
+    let totalAmount = 0;
+
+    for (const perf of invoice.performances) {
+      totalAmount += amountFor(perf);
+    }
+
+    return totalAmount;
+  };
+
   let result = `청구 내역 (고객명: ${invoice.customer})\n`;
 
   for (const aPerformance of invoice.performances) {
     // 이 줄은 청구 내역을 출력한다.
     result += `${playFor(aPerformance).name}: ${usd(amountFor(aPerformance))} (${aPerformance.audience}석)\n`;
-    totalAmount += amountFor(aPerformance);
   }
 
-  for (const perf of invoice.performances) {
-    volumeCredits += volumeCreditsFor(perf);
-  }
-
-  result += `총액 ${usd(totalAmount)}\n`;
-  result += `적립 포인트 ${volumeCredits}점\n`;
+  result += `총액 ${usd(totalAmount())}\n`;
+  result += `적립 포인트 ${totalVolumeCredits()}점\n`;
 
   return result;
 }
