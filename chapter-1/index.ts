@@ -65,11 +65,13 @@ function statement(invoice: Invoice, plays: Plays) {
   let result = `청구 내역 (고객명: ${invoice.customer})\n`;
 
   for (const aPerformance of invoice.performances) {
-    volumeCredits += volumeCreditsFor(aPerformance);
-
     // 이 줄은 청구 내역을 출력한다.
     result += `${playFor(aPerformance).name}: ${usd(amountFor(aPerformance))} (${aPerformance.audience}석)\n`;
     totalAmount += amountFor(aPerformance);
+  }
+
+  for (const perf of invoice.performances) {
+    volumeCredits += volumeCreditsFor(perf);
   }
 
   result += `총액 ${usd(totalAmount)}\n`;
