@@ -80,17 +80,20 @@ function statement(invoice: Invoice, plays: Plays) {
     return totalAmount;
   };
 
-  let result = `청구 내역 (고객명: ${invoice.customer})\n`;
+  const renderPlainText = (invoice: Invoice) => {
+    let result = `청구 내역 (고객명: ${invoice.customer})\n`;
 
-  for (const aPerformance of invoice.performances) {
-    // 이 줄은 청구 내역을 출력한다.
-    result += `${playFor(aPerformance).name}: ${usd(amountFor(aPerformance))} (${aPerformance.audience}석)\n`;
-  }
+    for (const perf of invoice.performances) {
+      result += `${playFor(perf).name}: ${usd(amountFor(perf))} (${perf.audience}석)\n`;
+    }
 
-  result += `총액 ${usd(totalAmount())}\n`;
-  result += `적립 포인트 ${totalVolumeCredits()}점\n`;
+    result += `총액 ${usd(totalAmount())}\n`;
+    result += `적립 포인트 ${totalVolumeCredits()}점\n`;
 
-  return result;
+    return result;
+  };
+
+  return renderPlainText(invoice);
 }
 
 export { statement };
