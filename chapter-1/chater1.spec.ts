@@ -73,4 +73,117 @@ describe("Statement", () => {
     const result = statement(invoice, plays);
     expect(result).toContain("적립 포인트 5점");
   });
+
+  it("비극 공연의 가격을 올바르게 계산해야 한다", () => {
+    const invoice = {
+      customer: "Test Customer",
+      performances: [{ playID: "hamlet", audience: 20 }],
+    };
+
+    const plays = {
+      hamlet: { name: "Hamlet", type: "tragedy" },
+    };
+
+    const result = statement(invoice, plays);
+    expect(result).toContain("Hamlet: $400.00 (20석)");
+    expect(result).toContain("총액 $400.00");
+  });
+
+  it("비극 공연의 가격을 관객 30명 초과 시 추가 요금으로 계산해야 한다", () => {
+    const invoice = {
+      customer: "Test Customer",
+      performances: [{ playID: "hamlet", audience: 40 }],
+    };
+
+    const plays = {
+      hamlet: { name: "Hamlet", type: "tragedy" },
+    };
+
+    const result = statement(invoice, plays);
+    expect(result).toContain("Hamlet: $500.00 (40석)");
+    expect(result).toContain("총액 $500.00");
+  });
+
+  it("희극 공연의 가격을 올바르게 계산해야 한다", () => {
+    const invoice = {
+      customer: "Test Customer",
+      performances: [{ playID: "as-like", audience: 15 }],
+    };
+
+    const plays = {
+      "as-like": { name: "As You Like It", type: "comedy" },
+    };
+
+    const result = statement(invoice, plays);
+    expect(result).toContain("As You Like It: $345.00 (15석)");
+    expect(result).toContain("총액 $345.00");
+  });
+
+  it("희극 공연의 가격을 관객 20명 초과 시 추가 요금으로 계산해야 한다", () => {
+    const invoice = {
+      customer: "Test Customer",
+      performances: [{ playID: "as-like", audience: 25 }],
+    };
+
+    const plays = {
+      "as-like": { name: "As You Like It", type: "comedy" },
+    };
+
+    const result = statement(invoice, plays);
+    expect(result).toContain("As You Like It: $500.00 (25석)");
+    expect(result).toContain("총액 $500.00");
+  });
+
+  it("관객이 30명 이하인 경우 추가 적립 포인트가 없어야 한다", () => {
+    const invoice = {
+      customer: "Test Customer",
+      performances: [{ playID: "hamlet", audience: 30 }],
+    };
+
+    const plays = {
+      hamlet: { name: "Hamlet", type: "tragedy" },
+    };
+
+    const result = statement(invoice, plays);
+    expect(result).toContain("적립 포인트 0점");
+  });
+
+  it("여러 공연의 총액을 정확하게 합산해야 한다", () => {
+    const invoice = {
+      customer: "Test Customer",
+      performances: [
+        { playID: "hamlet", audience: 40 },
+        { playID: "as-like", audience: 25 },
+        { playID: "othello", audience: 35 },
+      ],
+    };
+
+    const plays = {
+      hamlet: { name: "Hamlet", type: "tragedy" },
+      "as-like": { name: "As You Like It", type: "comedy" },
+      othello: { name: "Othello", type: "tragedy" },
+    };
+
+    const result = statement(invoice, plays);
+
+    expect(result).toContain("총액 $1,450.00");
+  });
+
+  it("여러 공연의 적립 포인트를 정확하게 합산해야 한다", () => {
+    const invoice = {
+      customer: "Test Customer",
+      performances: [
+        { playID: "hamlet", audience: 40 },
+        { playID: "as-like", audience: 25 },
+      ],
+    };
+
+    const plays = {
+      hamlet: { name: "Hamlet", type: "tragedy" },
+      "as-like": { name: "As You Like It", type: "comedy" },
+    };
+
+    const result = statement(invoice, plays);
+    expect(result).toContain("적립 포인트 15점");
+  });
 });
