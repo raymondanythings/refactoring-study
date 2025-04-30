@@ -1,22 +1,29 @@
 class Orgnization {
-  public _data = {
-    name: "",
-    country: "",
-  };
+  private _name: string;
+  private _country: string;
 
   constructor(data: {
     name: string;
     country: string;
   }) {
-    this._data = data;
+    this._name = data.name;
+    this._country = data.country;
   }
 
   get name() {
-    return this._data.name;
+    return this._name;
   }
 
   set name(value: string) {
-    this._data.name = value;
+    this._name = value;
+  }
+
+  get country() {
+    return this._country;
+  }
+
+  set country(value: string) {
+    this._country = value;
   }
 }
 
