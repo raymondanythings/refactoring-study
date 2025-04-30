@@ -10,17 +10,20 @@ class Orgnization {
   }) {
     this._data = data;
   }
+
+  get name() {
+    return this._data.name;
+  }
+
+  set name(value: string) {
+    this._data.name = value;
+  }
 }
 
-// const organization = { name: "애크미 구스베리", country: "GB" };
 const organization = new Orgnization({
   name: "애크미 구스베리",
   country: "GB",
 });
-
-function getRawDataOfOrganization() {
-  return organization._data;
-}
 
 function getOrganization() {
   return organization;
@@ -28,5 +31,5 @@ function getOrganization() {
 
 let result = "";
 
-result += `<h1>${getRawDataOfOrganization().name}</h1>`;
-getOrganization()._data.name = "애크미 구스베리";
+result += `<h1>${getOrganization().name}</h1>`;
+getOrganization().name = "애크미 구스베리";
